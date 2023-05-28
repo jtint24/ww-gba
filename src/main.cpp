@@ -28,6 +28,8 @@
 #include "common_info.h"
 #include "common_variable_8x16_sprite_font.h"
 
+#define INCLUDE_HUD 1
+
 namespace
 {
     struct camera
@@ -152,8 +154,7 @@ namespace
     }
 }
 
-int main()
-{
+int main() {
     bn::core::init();
 
     bn::sprite_text_generator text_generator(common::variable_8x16_sprite_font);
@@ -187,16 +188,15 @@ int main()
 
 
     bn::sprite_ptr boat_sprite = bn::sprite_items::boat.create_sprite(0, 48);
-    //bn::sprite_animate_action<4> action = bn::create_sprite_animate_action_forever(
-    //        boat_sprite, 16, bn::sprite_items::boat.tiles_item(), 0, 1, 2, 3);
-    bn::sprite_animate_action<4> action = bn::create_sprite_animate_action_forever(boat_sprite, 16, bn::sprite_items::boat.tiles_item(), 0, 1, 2, 3);
-
-    //bn::sprite_ptr hud_sprite = bn::sprite_items::hud.create_sprite(-88, -48);
+    bn::sprite_animate_action<4> action = bn::create_sprite_animate_action_forever(boat_sprite, 16,
+                                                                                   bn::sprite_items::boat.tiles_item(),
+                                                                                   0, 1, 2, 3);
 
 
-    // bn::sprite_ptr compass_sprite = bn::sprite_items::compass.create_sprite(-112, -48);
-    // bn::sprite_ptr needle_sprite = bn::sprite_items::needle.create_sprite(-112, -48);
+    bn::sprite_ptr hud_sprite = bn::sprite_items::hud.create_sprite(-88, -48);
 
+    bn::sprite_ptr compass_sprite = bn::sprite_items::compass.create_sprite(-110, -48);
+    bn::sprite_ptr needle_sprite = bn::sprite_items::needle.create_sprite(-110, -48);
 
     while(true)
     {
@@ -208,8 +208,7 @@ int main()
         dy_hbe.reload_values_ref();
         //bn::core::update();
 
-
-        // needle_sprite.set_rotation_angle(((float)camera.phi) * 360.0 / 2048.0);
+        needle_sprite.set_rotation_angle(((float) camera.phi) * 360.0 / 2048.0);
 
         action.update();
 
