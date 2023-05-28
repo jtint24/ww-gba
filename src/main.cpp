@@ -18,6 +18,11 @@
 #include "bn_affine_bg_dy_register_hbe_ptr.h"
 
 #include "bn_sprite_items_boat.h"
+#include "bn_sprite_items_hud.h"
+#include "bn_sprite_items_compass.h"
+#include "bn_sprite_items_needle.h"
+
+
 #include "bn_affine_bg_items_land.h"
 
 #include "common_info.h"
@@ -28,25 +33,30 @@ namespace
     struct camera
     {
         bn::fixed x = 440;
-        bn::fixed y = 128;
+        bn::fixed y = 250;
         bn::fixed z = 420;
         int phi = 10;
         int cos = 0;
         int sin = 0;
     };
 
-    void sprite_boat_thing() {
+    void sprite_boat_thing(camera camera) {
         bn::sprite_ptr boat_sprite = bn::sprite_items::boat.create_sprite(0, 48);
         //bn::sprite_animate_action<4> action = bn::create_sprite_animate_action_forever(
         //        boat_sprite, 16, bn::sprite_items::boat.tiles_item(), 0, 1, 2, 3);
 
-        //boat_sprite.set_visible(true);
+        bn::sprite_animate_action<4> action = bn::create_sprite_animate_action_forever(boat_sprite, 16, bn::sprite_items::boat.tiles_item(), 0, 1,2,3);
+
+        action.update();
+
+        // boat_sprite.set_visible(true);
         // boat_sprite.set_z_order(-1000);
+        float y_float = camera.y.to_float();
+        float scale_val = (500.0)/( y_float);
+        boat_sprite.set_scale(scale_val);
 
 
-        //action.update();
         bn::core::update();
-
     }
 
     void update_camera(camera& camera)
@@ -175,6 +185,19 @@ int main()
 
     camera camera;
 
+
+    bn::sprite_ptr boat_sprite = bn::sprite_items::boat.create_sprite(0, 48);
+    //bn::sprite_animate_action<4> action = bn::create_sprite_animate_action_forever(
+    //        boat_sprite, 16, bn::sprite_items::boat.tiles_item(), 0, 1, 2, 3);
+    bn::sprite_animate_action<4> action = bn::create_sprite_animate_action_forever(boat_sprite, 16, bn::sprite_items::boat.tiles_item(), 0, 1, 2, 3);
+
+    //bn::sprite_ptr hud_sprite = bn::sprite_items::hud.create_sprite(-88, -48);
+
+
+    // bn::sprite_ptr compass_sprite = bn::sprite_items::compass.create_sprite(-112, -48);
+    // bn::sprite_ptr needle_sprite = bn::sprite_items::needle.create_sprite(-112, -48);
+
+
     while(true)
     {
         update_camera(camera);
@@ -186,7 +209,18 @@ int main()
         //bn::core::update();
 
 
-        sprite_boat_thing();
+        // needle_sprite.set_rotation_angle(((float)camera.phi) * 360.0 / 2048.0);
+
+        action.update();
+
+        // boat_sprite.set_visible(true);
+        // boat_sprite.set_z_order(-1000);
+        float y_float = camera.y.to_float();
+        float scale_val = (500.0)/( y_float);
+        boat_sprite.set_scale(scale_val);
+
+
+        bn::core::update();
 
 
 
