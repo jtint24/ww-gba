@@ -25,7 +25,7 @@ namespace
     {
         bn::fixed x = 440;
         bn::fixed y = 128;
-        bn::fixed z = 320;
+        bn::fixed z = 420;
         int phi = 10;
         int cos = 0;
         int sin = 0;
@@ -38,21 +38,21 @@ namespace
 
         if(bn::keypad::left_held())
         {
-            dir_x -= bn::fixed::from_data(32);
+            // dir_x -= bn::fixed::from_data(32);
         }
         else if(bn::keypad::right_held())
         {
-            dir_x += bn::fixed::from_data(32);
+            // dir_x += bn::fixed::from_data(32);
         }
 
         if(bn::keypad::down_held())
         {
-            dir_z += bn::fixed::from_data(32);
+            //dir_z += bn::fixed::from_data(32);
         }
-        else if(bn::keypad::up_held())
-        {
+        //else if(bn::keypad::up_held())
+        //{
             dir_z -= bn::fixed::from_data(32);
-        }
+        //}
 
         if(bn::keypad::b_held())
         {
@@ -68,7 +68,7 @@ namespace
             camera.y += bn::fixed::from_data(2048);
         }
 
-        if(bn::keypad::l_held())
+        if(bn::keypad::left_held())
         {
             camera.phi -= 4;
 
@@ -77,7 +77,7 @@ namespace
                 camera.phi += 2048;
             }
         }
-        else if(bn::keypad::r_held())
+        else if(bn::keypad::right_held())
         {
             camera.phi += 4;
 
@@ -130,14 +130,16 @@ int main()
 
     bn::sprite_text_generator text_generator(common::variable_8x16_sprite_font);
 
+    /*
     constexpr bn::string_view info_text_lines[] = {
         "Left/Right: move camera x",
         "Up/Down: move camera z",
         "B/A: move camera y",
         "L/R: move camera phi",
     };
+        */
 
-    common::info info("Mode 7", info_text_lines, text_generator);
+    //common::info info("", info_text_lines, text_generator);
 
     bn::affine_bg_ptr bg = bn::affine_bg_items::land.create_bg(-376, -336);
 
@@ -163,7 +165,7 @@ int main()
         pc_hbe.reload_values_ref();
         dx_hbe.reload_values_ref();
         dy_hbe.reload_values_ref();
-        info.update();
+        // info.update();
         bn::core::update();
     }
 }
