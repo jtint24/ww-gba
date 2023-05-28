@@ -7,13 +7,17 @@
 #include "bn_math.h"
 #include "bn_keypad.h"
 #include "bn_display.h"
+#include "bn_sprite_actions.h"
 #include "bn_affine_bg_ptr.h"
+#include "bn_sprite_animate_actions.h"
+
 #include "bn_sprite_text_generator.h"
 #include "bn_affine_bg_pa_register_hbe_ptr.h"
 #include "bn_affine_bg_pc_register_hbe_ptr.h"
 #include "bn_affine_bg_dx_register_hbe_ptr.h"
 #include "bn_affine_bg_dy_register_hbe_ptr.h"
 
+#include "bn_sprite_items_boat.h"
 #include "bn_affine_bg_items_land.h"
 
 #include "common_info.h"
@@ -30,6 +34,20 @@ namespace
         int cos = 0;
         int sin = 0;
     };
+
+    void sprite_boat_thing() {
+        bn::sprite_ptr boat_sprite = bn::sprite_items::boat.create_sprite(0, 48);
+        //bn::sprite_animate_action<4> action = bn::create_sprite_animate_action_forever(
+        //        boat_sprite, 16, bn::sprite_items::boat.tiles_item(), 0, 1, 2, 3);
+
+        //boat_sprite.set_visible(true);
+        // boat_sprite.set_z_order(-1000);
+
+
+        //action.update();
+        bn::core::update();
+
+    }
 
     void update_camera(camera& camera)
     {
@@ -51,7 +69,7 @@ namespace
         }
         //else if(bn::keypad::up_held())
         //{
-            dir_z -= bn::fixed::from_data(32);
+            dir_z -= bn::fixed::from_data(48);
         //}
 
         if(bn::keypad::b_held())
@@ -70,7 +88,7 @@ namespace
 
         if(bn::keypad::left_held())
         {
-            camera.phi -= 4;
+            camera.phi -= 1;
 
             if(camera.phi < 0)
             {
@@ -79,7 +97,7 @@ namespace
         }
         else if(bn::keypad::right_held())
         {
-            camera.phi += 4;
+            camera.phi += 1;
 
             if(camera.phi >= 2048)
             {
@@ -141,7 +159,7 @@ int main()
 
     //common::info info("", info_text_lines, text_generator);
 
-    bn::affine_bg_ptr bg = bn::affine_bg_items::land.create_bg(-376, -336);
+    bn::affine_bg_ptr bg = bn::affine_bg_items::land.create_bg(-376, -406);// 336
 
     int16_t pa_values[bn::display::height()];
     bn::affine_bg_pa_register_hbe_ptr pa_hbe = bn::affine_bg_pa_register_hbe_ptr::create(bg, pa_values);
@@ -165,7 +183,14 @@ int main()
         pc_hbe.reload_values_ref();
         dx_hbe.reload_values_ref();
         dy_hbe.reload_values_ref();
+        //bn::core::update();
+
+
+        sprite_boat_thing();
+
+
+
         // info.update();
-        bn::core::update();
+        //bn::core::update();
     }
 }
