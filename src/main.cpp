@@ -22,6 +22,9 @@
 #include "bn_sprite_items_compass.h"
 #include "bn_sprite_items_needle.h"
 
+#include "bn_sprite_items_island.h"
+
+
 
 #include "bn_affine_bg_items_land.h"
 
@@ -36,7 +39,7 @@ namespace
     {
         bn::fixed x = 440;
         bn::fixed y = 250;
-        bn::fixed z = 420;
+        bn::fixed z = 0;
         int phi = 10;
         int cos = 0;
         int sin = 0;
@@ -198,6 +201,14 @@ int main() {
     bn::sprite_ptr compass_sprite = bn::sprite_items::compass.create_sprite(-110, -48);
     bn::sprite_ptr needle_sprite = bn::sprite_items::needle.create_sprite(-110, -48);
 
+
+    //bn::sprite_ptr horizon[10];
+    //for (int i = 0; i <10; i++) {
+    // bn::sprite_ptr island = bn::sprite_items::island.create_sprite(0, -72);
+    // island.set_scale(0.5);
+    // }
+
+
     while(true)
     {
         update_camera(camera);
@@ -209,6 +220,10 @@ int main() {
         //bn::core::update();
 
         needle_sprite.set_rotation_angle(((float) camera.phi) * 360.0 / 2048.0);
+
+        if (( -camera.z / 4000.0) -0.3 > 0) {
+            //island.set_scale((-camera.z / 4000.0) - 0.3);
+        }
 
         action.update();
 
