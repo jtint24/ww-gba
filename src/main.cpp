@@ -17,7 +17,7 @@
 #include "bn_affine_bg_dx_register_hbe_ptr.h"
 #include "bn_affine_bg_dy_register_hbe_ptr.h"
 
-#include "bn_sprite_items_boat.h"
+#include "bn_sprite_items_boatb.h"
 #include "bn_sprite_items_hud.h"
 #include "bn_sprite_items_compass.h"
 #include "bn_sprite_items_needle.h"
@@ -26,7 +26,7 @@
 
 
 
-#include "bn_affine_bg_items_land.h"
+#include "bn_affine_bg_items_landb.h"
 
 #include "common_info.h"
 #include "common_variable_8x16_sprite_font.h"
@@ -46,11 +46,11 @@ namespace
     };
 
     void sprite_boat_thing(camera camera) {
-        bn::sprite_ptr boat_sprite = bn::sprite_items::boat.create_sprite(0, 48);
+        bn::sprite_ptr boat_sprite = bn::sprite_items::boatb.create_sprite(0, 48);
         //bn::sprite_animate_action<4> action = bn::create_sprite_animate_action_forever(
         //        boat_sprite, 16, bn::sprite_items::boat.tiles_item(), 0, 1, 2, 3);
 
-        bn::sprite_animate_action<4> action = bn::create_sprite_animate_action_forever(boat_sprite, 16, bn::sprite_items::boat.tiles_item(), 0, 1,2,3);
+        bn::sprite_animate_action<4> action = bn::create_sprite_animate_action_forever(boat_sprite, 16, bn::sprite_items::boatb.tiles_item(), 0, 1,2,3);
 
         action.update();
 
@@ -89,7 +89,7 @@ namespace
 
         if(bn::keypad::b_held())
         {
-            camera.y -= bn::fixed::from_data(2048);
+            camera.y -= bn::fixed::from_data(4096);
 
             if(camera.y < 0)
             {
@@ -98,7 +98,7 @@ namespace
         }
         else if(bn::keypad::a_held())
         {
-            camera.y += bn::fixed::from_data(2048);
+            camera.y += bn::fixed::from_data(4096);
         }
 
         if(bn::keypad::left_held())
@@ -173,7 +173,8 @@ int main() {
 
     //common::info info("", info_text_lines, text_generator);
 
-    bn::affine_bg_ptr bg = bn::affine_bg_items::land.create_bg(-376, -406);// 336
+    bn::affine_bg_ptr bg = bn::affine_bg_items::landb.create_bg(-376, -406);// 336
+    bg.set_scale(4);
 
     int16_t pa_values[bn::display::height()];
     bn::affine_bg_pa_register_hbe_ptr pa_hbe = bn::affine_bg_pa_register_hbe_ptr::create(bg, pa_values);
@@ -190,9 +191,9 @@ int main() {
     camera camera;
 
 
-    bn::sprite_ptr boat_sprite = bn::sprite_items::boat.create_sprite(0, 48);
+    bn::sprite_ptr boat_sprite = bn::sprite_items::boatb.create_sprite(0, 48);
     bn::sprite_animate_action<4> action = bn::create_sprite_animate_action_forever(boat_sprite, 16,
-                                                                                   bn::sprite_items::boat.tiles_item(),
+                                                                                   bn::sprite_items::boatb.tiles_item(),
                                                                                    0, 1, 2, 3);
 
 
@@ -231,7 +232,15 @@ int main() {
         // boat_sprite.set_z_order(-1000);
         float y_float = camera.y.to_float();
         float scale_val = (500.0)/( y_float);
-        boat_sprite.set_scale(scale_val);
+
+        if (scale_val >= 0.5 && scale_val <= 2) {
+            boat_sprite.set_scale(scale_val);
+        } else if (scale_val < 0.5) {
+            camera.y = 1000.0;
+        } else if (scale_val > 2) {
+            camera.y = 250.0;
+        }
+        bg.set_scale(4);
 
 
         bn::core::update();
